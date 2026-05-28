@@ -11,7 +11,7 @@ class TextType(Enum):
     IMAGE = 6
 
 class TextNode:
-    def __init__(self, text: str, text_type: TextType, url: str = None):
+    def __init__(self, text: str, text_type: TextType, url: str | None = None):
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -34,7 +34,7 @@ def text_node_to_html_node(text_node : TextNode) -> LeafNode:
     if text_node.text_type == TextType.CODE:
         return LeafNode(tag="code", value=text_node.text)
     if text_node.text_type == TextType.LINK:
-        return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url})
+        return LeafNode(tag="a", value=text_node.text, props={"href": text_node.url} if text_node.url else None)
     if text_node.text_type == TextType.IMAGE:
-        return LeafNode(tag="img", value="", props={"src": text_node.url})
+        return LeafNode(tag="img", value="", props={"src": text_node.url} if text_node.url else None)
     raise ValueError(f"Unsupported text type: {text_node.text_type}")
